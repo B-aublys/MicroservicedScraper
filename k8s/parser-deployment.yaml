@@ -25,14 +25,23 @@ spec:
         - configMapRef:
             name: parser-config
         livenessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - "netstat -tlnp | grep :50051"
+          tcpSocket:
+            port: 50051
           initialDelaySeconds: 10
           periodSeconds: 10
           failureThreshold: 2
+        readinessProbe:
+          tcpSocket:
+            port: 50051
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 1
+        startupProbe:
+          tcpSocket:
+            port: 50051
+          initialDelaySeconds: 0
+          periodSeconds: 2
+          failureThreshold: 30
         resources:
           requests:
             memory: "256Mi"
