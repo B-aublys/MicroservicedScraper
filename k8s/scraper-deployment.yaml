@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scraper-cronjob
+  labels:
+    app: scraper
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: scraper
+        spec:
+          containers:
+          - name: scraper
+            image: scraper:latest
+            imagePullPolicy: Never
+            env:
+            - name: SCRAPER_URL
+              value: "https://books.toscrape.com/index.html"
+            - name: SCRAPER_MAX_RETRIES
+              value: "3"
+            - name: SCRAPER_NUM_WORKERS
+              value: "5"
+            - name: GRPC_PARSER_SERVER
+              value: "parser-service:50051"
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "250m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+          restartPolicy: OnFailure
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1

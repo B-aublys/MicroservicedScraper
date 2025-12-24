@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package parser;
+
+// WebsiteParser service definition
+service WebsiteParser {
+  // Parse a website and return results
+  rpc ParseWebsite (ParseRequest) returns (ParseResponse);
+}
+
+// Request to parse a website
+message ParseRequest {
+  string url = 1; // The URL that was scraped
+  string html_content = 2; // The HTML content to parse
+}
+
+// Response with parsed data
+message ParseResponse {
+  string url = 1; // The parsed URL
+  string error = 2; // Error message if accepting the task failed
+}

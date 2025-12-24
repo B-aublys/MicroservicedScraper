@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parser-deployment
+  labels:
+    app: parser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: parser
+  template:
+    metadata:
+      labels:
+        app: parser
+    spec:
+      containers:
+      - name: parser
+        image: parser:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 50051
+          name: grpc
+        env:
+        - name: GRPC_PARSER_PORT
+          value: "50051"
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "netstat -tlnp | grep :50051"
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 2
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
