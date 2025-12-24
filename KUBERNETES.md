@@ -1,7 +1,7 @@
 # Kubernetes Deployment Guide
 
 ## Prerequisites
-- Docker Desktop with Kubernetes enabled
+- Have a running kubernetes instance like Docker Desktop (untested with other implementations, but should work :))
 - kubectl installed
 
 ## Setup Steps
