@@ -101,7 +101,7 @@ Moreover on the interplay between the crawler and the parser. These two services
 Currently the kubernetes configuration is as follows:
 - both the crawler and parser get their own deployment
     - The crawler is a CronJob that runs every 5 mins.
-    - The parser is a standard service with a liveness probe that checks that python is still running.
+    - The parser is a standard service with healthches that checks the grcp service is still running.
 - config maps are created for both services for their settings.
 
 ## Future improvements:
