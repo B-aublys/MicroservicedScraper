@@ -2,6 +2,7 @@ import logging
 from concurrent.futures import ThreadPoolExecutor
 import parser.parser_pb2 as parser_pb2
 import parser.parser_pb2_grpc as parser_pb2_grpc
+from parser.website_parsers.ParsingErrors import ParsingErrors
 from .data_saver import BookDataSaver
 from .website_parsers.books_to_scrape_scraper import BooksToScrapeParser
 
@@ -22,23 +23,23 @@ class WebsiteParserServicer(parser_pb2_grpc.WebsiteParserServicer):
         """Parse and save book asynchronously."""
 
         try:
-            parsed_data = self.parser.parse(html_content)
+            parsed_result = self.parser.parse(html_content)
             
-            if parsed_data.success:
-                self.saver.save_book(parsed_data.data.upc, parsed_data.data)
+            if parsed_result.success:
+                self.saver.save_book(parsed_result.data.upc, parsed_result.data)
                 logger.info(f"Successfully parsed {url}")
 
-            elif parsed_data.error == "Not a product page":
+            elif parsed_result.error == ParsingErrors.NOT_A_PRODUCT_PAGE:
                 logger.info(f"URL {url} is not a product page, skipping.")
 
             else:
-                logger.error(f"Failed to parse {url}: {parsed_data.error}")
+                logger.error(f"Failed to parse {url}: {parsed_result.error}")
         
         except Exception as e:
             logger.error(f"Error parsing {url}: {e}")
     
     def ParseWebsite(self, request, context) -> parser_pb2.ParseResponse:
-        """Parse website HTML content asynchronously."""
+        """Create a new job for parsing a website."""
         try:
             logger.info(f"Queued parsing for {request.url}")
             self.executor.submit(self._parse_async, request.url, request.html_content)

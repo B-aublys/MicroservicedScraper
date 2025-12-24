@@ -5,7 +5,7 @@ metadata:
   labels:
     app: scraper
 spec:
-  schedule: "0 * * * *"
+  schedule: "*/5 * * * *"
   jobTemplate:
     spec:
       template:
@@ -17,15 +17,9 @@ spec:
           - name: scraper
             image: scraper:latest
             imagePullPolicy: Never
-            env:
-            - name: SCRAPER_URL
-              value: "https://books.toscrape.com/index.html"
-            - name: SCRAPER_MAX_RETRIES
-              value: "3"
-            - name: SCRAPER_NUM_WORKERS
-              value: "5"
-            - name: GRPC_PARSER_SERVER
-              value: "parser-service:50051"
+            envFrom:
+            - configMapRef:
+                name: scraper-config
             resources:
               requests:
                 memory: "256Mi"

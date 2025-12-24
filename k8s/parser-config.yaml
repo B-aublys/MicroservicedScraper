@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: parser-config
+  labels:
+    app: parser
+data:
+  GRPC_PARSER_PORT: "50051"

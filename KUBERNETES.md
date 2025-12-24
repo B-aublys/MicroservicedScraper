@@ -16,7 +16,17 @@ docker build -f docker/parser.Dockerfile -t parser:latest .
 docker build -f docker/scraper.Dockerfile -t scraper:latest .
 ```
 
-### 2. Deploy to Kubernetes
+### 2. Deploy ConfigMaps
+
+```bash
+# Deploy parser config
+kubectl apply -f k8s/parser-config.yaml
+
+# Deploy scraper config
+kubectl apply -f k8s/scraper-config.yaml
+```
+
+### 3. Deploy to Kubernetes
 
 ```bash
 # Deploy parser

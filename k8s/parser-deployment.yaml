@@ -21,9 +21,9 @@ spec:
         ports:
         - containerPort: 50051
           name: grpc
-        env:
-        - name: GRPC_PARSER_PORT
-          value: "50051"
+        envFrom:
+        - configMapRef:
+            name: parser-config
         livenessProbe:
           exec:
             command:

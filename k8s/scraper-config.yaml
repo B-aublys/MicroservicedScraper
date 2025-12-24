@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scraper-config
+  labels:
+    app: scraper
+data:
+  SCRAPER_URL: "https://books.toscrape.com/index.html"
+  SCRAPER_MAX_RETRIES: "3"
+  SCRAPER_NUM_WORKERS: "5"
+  GRPC_PARSER_SERVER: "parser-service:50051"

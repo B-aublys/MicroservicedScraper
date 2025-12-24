@@ -1,9 +1,7 @@
 from concurrent import futures
 import logging
 import os
-
 import grpc
-
 from parser import parser_pb2_grpc
 from parser.grpc_parcer_server import WebsiteParserServicer
 import traceback

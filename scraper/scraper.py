@@ -78,8 +78,8 @@ class Scraper:
             response.raise_for_status()
             job.logSuccess("fetched webpage")
             html = await response.text()
-            await self.send_to_parser(job, html)
             await self.add_new_jobs(job, html)
+            await self.send_to_parser(job, html)
 
     async def send_to_parser(self, job: ScrapeJob, html: str) -> None:
         """Send HTML content to the parser service via gRPC"""
@@ -95,6 +95,7 @@ class Scraper:
                 logger.error(f"Parser error for {job.url}: {parse_response.error}")
             else:
                 logger.info(f"Successfully called the parsing service for {job.url}")
+                
         except Exception as e:
             logger.error(f"Error occured sending data to parse the GRCP server for {job.url}: {e}")
 
